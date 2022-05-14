@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Создание задач
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div>
+            <form action="" class="create_task_form">
+                <div class="create_task_side">
+                    {{ form.title.label }}{{ form.title() }} <br>
+                    {{ form.desc.label }}{{ form.desc() }} <br>
+                    {{ form.deadline.label }}{{ form.deadline() }} <br>
+                    {{ form.submit() }}
+                </div>
+                <div class="developerlist_side">
+                    <ul>
+                        {% for developer in developerlist %}
+                            <li class="developerlist_item">
+                                <input type="checkbox" name="developers" value={{ user.UserId }}>
+                                {{ user.FIO }}
+                                <p>{{ user.Role.Title }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

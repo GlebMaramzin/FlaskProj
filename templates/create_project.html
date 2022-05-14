@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Создание проекта
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div>
+            <form action="" method="post" class="create_project_form">
+                <div class="create_project_side">
+                    {{ form.title.label() }}{{ form.title() }} <br>
+                    {{ form.desc.label() }}{{ form.desc() }} <br>
+                    {{ form.deadline.label() }}{{ form.deadline() }} <br>
+                    {{ form.submit() }}
+                </div>
+                <div class="userlist_side">
+                    <ul>
+                        {% for user in userlist %}
+                            <li class="userlist_item">
+                                <input type="checkbox" name="users" value={{ user.UserId }}>
+                                {{ user.FIO }}
+                                <p>{{ user.Role.Title }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

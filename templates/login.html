@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+</head>
+<body>
+    {% for category, message in  get_flashed_messages(with_categories=true) %}
+	    <spam class="{{ category }}">{{ message }}</spam>
+    {% endfor %}
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        {{ form.login.label() }} {{ form.login() }} <br>
+        {{ form.password.label() }} {{ form.password() }} <br>
+        {{ form.submit() }}
+    </form>
+</body>
+</html>

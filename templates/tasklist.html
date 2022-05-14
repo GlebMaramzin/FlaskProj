@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Задачи
+{% endblock %}
+
+{% block user_fio %}
+    {{ user_fio }}
+{% endblock %}
+
+{% block user_role %}
+    {{ user_role }}
+{% endblock %}
+
+{% block body %}
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="drop-zone">
+            <span class="drop-zone__prompt">Нажмите или перетащите сюда файлы</span>
+            <input type="file" name="file" class="drop-zone__input" multiple>
+        </div>
+        <input type="submit" value="Загрузить">
+    </form>
+    <script src="../static/js/drag_and_drop_files.js"></script>
+{% endblock %}
