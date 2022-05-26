@@ -4,6 +4,32 @@
     Проект
 {% endblock %}
 
-{% block body %}
+{% block user_img %}
+    ../static/{{ user_img }}
+{% endblock %}
 
+{% block user_fio %}
+    {{ user_fio }}
+{% endblock %}
+
+{% block user_role %}
+    {{ user_role }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% if project is none %}
+            {% if user_role == "Главный разработчик" %}
+                В данный момент проект не создан
+                <form action="" method="post">
+                    <input type="submit" value="Создать проект">
+                </form>
+            {% else %}
+                <p>Вы не прикреплены к проекту</p>
+                <p>Обратитесь к главному разработчику или администратору</p>
+            {% endif %}
+        <!-- Если проект есть -->
+    {% else %}
+    {% endif %}
+    </div>
 {% endblock %}

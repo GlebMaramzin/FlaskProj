@@ -4,23 +4,58 @@
     Создание задач
 {% endblock %}
 
+{% block user_img %}
+    ../static/{{ user_img }}
+{% endblock %}
+
+{% block user_fio %}
+    {{ user_fio }}
+{% endblock %}
+
+{% block user_role %}
+    {{ user_role }}
+{% endblock %}
+
 {% block body %}
     <div class="container">
-        <div>
-            <form action="" class="create_task_form">
+        <div class="create_task_container">
+            <h2>Создание задачи</h2>
+            <form action="" method="post" class="create_task_form">
                 <div class="create_task_side">
-                    {{ form.title.label }}{{ form.title() }} <br>
-                    {{ form.desc.label }}{{ form.desc() }} <br>
-                    {{ form.deadline.label }}{{ form.deadline() }} <br>
-                    {{ form.submit() }}
+                    <h5>Характеристики задачи</h5>
+                    {{ form.hidden_tag() }}
+                    <div class="form-floating">
+                        {{ form.title(class_="form-control") }}
+                        {{ form.title.label }}
+                    </div>
+                    <div class="form-floating">
+                        {{ form.desc(class_="form-control") }}
+                        {{ form.desc.label }}
+                    </div>
+                    <div class="form-floating">
+                        {{ form.deadline(class_="form-control") }}
+                        {{ form.deadline.label }}
+                    </div>
+                    <div class="form-check">
+                        {{ form.isPriority(class_="form-check-input") }}
+                        {{ form.isPriority.label }}
+                    </div>
+                    {{ form.submit(class_="w-100 btn btn-lg btn-primary") }}
                 </div>
-                <div class="developerlist_side">
-                    <ul>
-                        {% for developer in developerlist %}
-                            <li class="developerlist_item">
-                                <input type="checkbox" name="developers" value={{ user.UserId }}>
-                                {{ user.FIO }}
-                                <p>{{ user.Role.Title }}</p>
+                <div class="userlist_side">
+                    <h5>Список участников проекта</h5>
+                    <input type="text" placeholder="Поиск" class="find-input">
+                    <ul class="userlist">
+                        {% for user in userlist %}
+                            <li class="userlist_item">
+                                <input type="checkbox" class="form-check-input" name="users" value={{ user.Login }}>
+                                <div class="user_info">
+                                    <div><img src="../static/{{ user.Icon.Path }}" alt="" height="64" width="64"></div>
+                                    <div class="wrap">
+                                        <div class="user_fio">{{ user.FIO }}</div>
+                                        <div>{{ user.Role.Title }}</div>
+                                    </div>
+                                </div>
                             </li>
                         {% endfor %}
                     </ul>
@@ -28,4 +63,39 @@
             </form>
         </div>
     </div>
+    <script>
+        let userlist_items = document.getElementsByClassName("userlist_item");
+        let curr = userlist_items[0];
+        curr.querySelector(".form-check-input").checked = true;
+        curr.style.backgroundColor = 'rgb(152, 251, 152)';
+        for (let i = 0; i < userlist_items.length; i++) {
+            userlist_items[i].addEventListener("click", () => {
+                curr.removeAttribute("style");
+                curr.querySelector(".form-check-input").checked = false;
+                curr = userlist_items[i];
+                curr.querySelector(".form-check-input").checked = true;
+                curr.style.backgroundColor = 'rgb(152, 251, 152)';
+            });
+        }
+
+        document.querySelector(".find-input").oninput = function () {
+            let val = this.value.trim();
+            let userlistItems = document.querySelectorAll('.userlist_item');
+            if (val !== "") {
+                userlistItems.forEach(function (elem) {
+                    if (elem.querySelector('.user_fio').innerText.search(val) === -1) {
+                        elem.classList.add('hide');
+                    }
+                    else {
+                        elem.classList.remove('hide');
+                    }
+                });
+            }
+            else {
+                userlistItems.forEach(function (elem) {
+                    elem.classList.remove('hide');
+                });
+            }
+        };
+    </script>
 {% endblock %}

@@ -4,6 +4,10 @@
     Задачи
 {% endblock %}
 
+{% block user_img %}
+    ../static/{{ user_img }}
+{% endblock %}
+
 {% block user_fio %}
     {{ user_fio }}
 {% endblock %}
@@ -13,12 +17,21 @@
 {% endblock %}
 
 {% block body %}
-    <form action="" method="post" enctype="multipart/form-data">
-        <div class="drop-zone">
-            <span class="drop-zone__prompt">Нажмите или перетащите сюда файлы</span>
-            <input type="file" name="file" class="drop-zone__input" multiple>
-        </div>
-        <input type="submit" value="Загрузить">
-    </form>
-    <script src="../static/js/drag_and_drop_files.js"></script>
+    <div class="container task-list">
+    {% if tasks is not none %}
+            {% for task in tasks %}
+                <div class="task">
+                    <h3><a href="{{ url_for('show_task', task_id=task.TaskId) }}">{{ task.Title }}</a></h3>
+                    <p>{{ task.Desc }}</p>
+                    {% if task.Deadline is not none %}
+                        <p>Срок выполнения: {{ task.Deadline }}</p>
+                    {% else %}
+                        <p>Без срока выполнения</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+    {% else %}
+        <p>Список задач пуст</p>
+    {% endif %}
+    </div>
 {% endblock %}

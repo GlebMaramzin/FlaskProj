@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Задачи
+{% endblock %}
+
+{% block user_img %}
+    ../static/{{ user_img }}
+{% endblock %}
+
+{% block user_fio %}
+    {{ user_fio }}
+{% endblock %}
+
+{% block user_role %}
+    {{ user_role }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2>{{ curr_task.Title }}</h2>
+        <p>{{ curr_task.Desc }}</p>
+        {% if curr_task.Deadline is not none %}
+            <p>Срок выполнения: {{ curr_task.Deadline }}</p>
+        {% else %}
+            <p>Без срока выполнения</p>
+        {% endif %}
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="drop-zone">
+                <span class="drop-zone__prompt">Нажмите или перетащите сюда файлы</span>
+                <input type="file" name="file" class="drop-zone__input" multiple>
+            </div>
+            <div class="upload_files_btn">
+                <input type="submit" value="Загрузить" class="btn btn-success">
+            </div>
+        </form>
+    </div>
+    <script src="../static/js/drag_and_drop_files.js"></script>
+{% endblock %}

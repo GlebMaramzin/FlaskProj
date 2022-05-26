@@ -4,23 +4,54 @@
     Создание проекта
 {% endblock %}
 
+{% block user_img %}
+    ../static/{{ user_img }}
+{% endblock %}
+
+{% block user_fio %}
+    {{ user_fio }}
+{% endblock %}
+
+{% block user_role %}
+    {{ user_role }}
+{% endblock %}
+
 {% block body %}
     <div class="container">
-        <div>
+        <div class="create_project_container">
+            <h2>Создание проекта</h2>
             <form action="" method="post" class="create_project_form">
                 <div class="create_project_side">
-                    {{ form.title.label() }}{{ form.title() }} <br>
-                    {{ form.desc.label() }}{{ form.desc() }} <br>
-                    {{ form.deadline.label() }}{{ form.deadline() }} <br>
-                    {{ form.submit() }}
+                    <h5>Характеристики проекта</h5>
+                    {{ form.hidden_tag() }}
+                    <div class="form-floating">
+                        {{ form.title(class_="form-control") }}
+                        {{ form.title.label() }}
+                    </div>
+                    <div class="form-floating">
+                        {{ form.desc(class_="form-control") }}
+                        {{ form.desc.label() }}
+                    </div>
+                    <div class="form-floating">
+                        {{ form.deadline(class_="form-control") }}
+                        {{ form.deadline.label() }}
+                    </div>
+                    {{ form.submit(class_="w-100 btn btn-lg btn-primary") }}
                 </div>
                 <div class="userlist_side">
-                    <ul>
+                    <h5>Список сотрудников</h5>
+                    <input type="text" placeholder="Поиск" class="find-input">
+                    <ul class="userlist">
                         {% for user in userlist %}
                             <li class="userlist_item">
-                                <input type="checkbox" name="users" value={{ user.UserId }}>
-                                {{ user.FIO }}
-                                <p>{{ user.Role.Title }}</p>
+                                <input type="checkbox" class="form-check-input" name="users" value={{ user.Login }}>
+                                <div class="user_info">
+                                    <div><img src="../static/{{ user.Icon.Path }}" alt="" height="64" width="64"></div>
+                                    <div class="wrap">
+                                        <div class="user_fio">{{ user.FIO }}</div>
+                                        <div>{{ user.Role.Title }}</div>
+                                    </div>
+                                </div>
                             </li>
                         {% endfor %}
                     </ul>
@@ -28,4 +59,39 @@
             </form>
         </div>
     </div>
+    <script>
+        let userlist_items = document.getElementsByClassName("userlist_item");
+        for (let i = 0; i < userlist_items.length; i++) {
+            userlist_items[i].addEventListener("click", () => {
+                if (userlist_items[i].hasAttribute("style")) {
+                    userlist_items[i].removeAttribute("style");
+                    userlist_items[i].querySelector(".form-check-input").checked = false;
+                }
+                else {
+                    userlist_items[i].style.backgroundColor = 'rgb(152, 251, 152)';
+                    userlist_items[i].querySelector(".form-check-input").checked = true;
+                }
+            });
+        }
+
+        document.querySelector(".find-input").oninput = function () {
+            let val = this.value.trim();
+            let userlistItems = document.querySelectorAll('.userlist_item');
+            if (val !== "") {
+                userlistItems.forEach(function (elem) {
+                    if (elem.querySelector('.user_fio').innerText.search(val) === -1) {
+                        elem.classList.add('hide');
+                    }
+                    else {
+                        elem.classList.remove('hide');
+                    }
+                });
+            }
+            else {
+                userlistItems.forEach(function (elem) {
+                    elem.classList.remove('hide');
+                });
+            }
+        };
+    </script>
 {% endblock %}

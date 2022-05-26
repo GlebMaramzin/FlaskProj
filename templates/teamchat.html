@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Проект
+{% endblock %}
+
+{% block user_img %}
+    ../static/{{ user_img }}
+{% endblock %}
+
+{% block user_fio %}
+    {{ user_fio }}
+{% endblock %}
+
+{% block user_role %}
+    {{ user_role }}
+{% endblock %}
+
+{% block body %}
+    {% if project is not none %}
+        <div class="container">
+            <div id="messages"></div>
+            <div class="row">
+                <div class="col-7">
+                    <form id="form_send_msg" autocomplete="off" novalidate>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="message_input" placeholder="Введите текст сообщения">
+                        </div>
+                        <button type="submit" id="send_msg" class="btn btn-success">Отправить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
+
+        <script>
+            $(document).ready(() => {
+                $('#form_send_msg').on('submit', (e) => {
+                    e.preventDefault();
+                });
+
+                const socket = io.connect('http://127.0.0.1:5000');
+
+                $('#send_msg').on('click', () => {
+                    socket.send({
+                            'msg': $('#message_input').val()
+                        });
+                    $('#message_input').val('').focus();
+                });
+
+                socket.on('message', data => {
+                    if (data.msg.length > 0) {
+                            $('#messages').append(`<div>${data.msg}</div>`);
+                    }
+                });
+            });
+        </script>
+    {% else %}
+
+    {% endif %}
+{% endblock %}
